@@ -39,9 +39,9 @@ if exist firstLaunch.txt (
     pip install torch torchaudio --upgrade --force-reinstall --index-url https://download.pytorch.org/whl/cu121
 
     :: Need to move the models folders over
-    mv Meta_Spirit-LM-ungated\spiritlm_model spiritlm\checkpoints
-    mv Meta_Spirit-LM-ungated\speech_tokenizer spiritlm\checkpoints
-    mv main.py spiritlm
+    move Meta_Spirit-LM-ungated\spiritlm_model spiritlm\checkpoints
+    move Meta_Spirit-LM-ungated\speech_tokenizer spiritlm\checkpoints
+    move main.py spiritlm
 
     :: Remove the firstLaunch.txt file to prevent future installations
     del firstLaunch.txt

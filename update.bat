@@ -1,9 +1,9 @@
 @echo off
 
 echo Moving models and script back
-mv spiritlm\main.py .
-mv spiritlm\checkpoints\spiritlm_model Meta_Spirit-LM-ungated
-mv spiritlm\checkpoints\speech_tokenizer Meta_Spirit-LM-ungated
+move spiritlm\main.py .
+move spiritlm\checkpoints\spiritlm_model Meta_Spirit-LM-ungated
+move spiritlm\checkpoints\speech_tokenizer Meta_Spirit-LM-ungated
 
 echo. 
 echo Updating main repo
@@ -17,9 +17,9 @@ cd ..
 
 echo.
 echo Moving things back
-mv Meta_Spirit-LM-ungated\spiritlm_model spiritlm\checkpoints
-mv Meta_Spirit-LM-ungated\speech_tokenizer spiritlm\checkpoints
-mv main.py spiritlm
+move Meta_Spirit-LM-ungated\spiritlm_model spiritlm\checkpoints
+move Meta_Spirit-LM-ungated\speech_tokenizer spiritlm\checkpoints
+move main.py spiritlm
 
 echo.
 echo Done! Press the "any" key to close this window.
