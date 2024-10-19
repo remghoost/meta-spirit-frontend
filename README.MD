@@ -8,6 +8,13 @@ This repo is messy and dumb, but it *should* work.
 
 ---
 
+## Steps to run
+
+- `git clone` this repo
+- `run.bat`
+
+---
+
 - This assumes you want to use the base model, which the repo owner says works better than the expressive model overall
 - This uses torch 2.4.1
 
