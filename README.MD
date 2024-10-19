@@ -13,6 +13,13 @@ This repo is messy and dumb, but it *should* work.
 - `git clone` this repo
 - `run.bat`
 
+This will: 
+- Set up the venv 
+- Download the model 
+- Download/setup spiritlm
+- Get the correct version of torch 
+- Then run the gradio interface.
+
 ---
 
 - This assumes you want to use the base model, which the repo owner says works better than the expressive model overall
