@@ -1,4 +1,2 @@
-torch==2.4.1 --index-url https://download.pytorch.org/whl/cu121
-torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/cu121
 gradio
 transformers

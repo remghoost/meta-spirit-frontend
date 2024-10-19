@@ -7,12 +7,10 @@ import tempfile
 import os
 import numpy as np
 
-# Initialize the Spirit LM model
+# Initialize the Spirit LM base model. You can change this to spirit-lm-expressive-7b for a more expressive experience.
+spirit_lm = Spiritlm("spirit-lm-base-7b")
 
-model = "Meta_Spirit-LM-ungated\spiritlm_model\spirit-lm-base-7b"
-spirit_lm = Spiritlm(model)
-
-def generate_output(input_type, input_content_text, input_content_audio, output_modality, temperature, top_p, max_new_tokens, do_sample):
+def generate_output(input_type, input_content_text, input_content_audio, output_modality, temperature, top_p, max_new_tokens, do_sample, speaker_id):
     generation_config = GenerationConfig(
         temperature=temperature,
         top_p=top_p,
@@ -33,6 +31,7 @@ def generate_output(input_type, input_content_text, input_content_audio, output_
         interleaved_inputs=interleaved_inputs,
         output_modality=OutputModality[output_modality.upper()],
         generation_config=generation_config,
+        speaker_id=speaker_id,  # Pass the selected speaker ID
     )
 
     text_output = ""
@@ -69,18 +68,20 @@ def generate_output(input_type, input_content_text, input_content_audio, output_
 iface = gr.Interface(
     fn=generate_output,
     inputs=[
-        gr.Radio(["text", "audio"], label="Input Type"),
+        gr.Radio(["text", "audio"], label="Input Type", value="text"),
         gr.Textbox(label="Input Content (Text)"),
         gr.Audio(label="Input Content (Audio)", type="filepath"),
-        gr.Radio(["TEXT", "SPEECH", "ARBITRARY"], label="Output Modality"),
+        gr.Radio(["TEXT", "SPEECH", "ARBITRARY"], label="Output Modality", value="SPEECH"),
         gr.Slider(0, 1, step=0.1, value=0.9, label="Temperature"),
         gr.Slider(0, 1, step=0.05, value=0.95, label="Top P"),
         gr.Slider(1, 800, step=1, value=500, label="Max New Tokens"),
         gr.Checkbox(value=True, label="Do Sample"),
+        gr.Dropdown(choices=[0, 1, 2, 3], value=0, label="Speaker ID"), 
     ],
     outputs=[gr.Textbox(label="Generated Text"), gr.Audio(label="Generated Audio")],
     title="Spirit LM WebUI Demo",
     description="Demo for generating text or audio using the Spirit LM model.",
+    flagging_mode="never",
 )
 
 # Launch the interface

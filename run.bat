@@ -36,6 +36,13 @@ if exist firstLaunch.txt (
     :: Install the remaining dependencies from requirements.txt
     pip install -r requirements.txt
 
+    pip install torch torchaudio --upgrade --force-reinstall --index-url https://download.pytorch.org/whl/cu121
+
+    :: Need to move the models folders over
+    mv Meta_Spirit-LM-ungated\spiritlm_model spiritlm\checkpoints
+    mv Meta_Spirit-LM-ungated\speech_tokenizer spiritlm\checkpoints
+    mv main.py spiritlm
+
     :: Remove the firstLaunch.txt file to prevent future installations
     del firstLaunch.txt
 
@@ -46,6 +53,9 @@ if exist firstLaunch.txt (
 
 :: Activate the virtual environment
 call venv\Scripts\activate
+
+:: Moving to spiritlm folder
+cd spiritlm
 
 :: Run the main application
 echo Running Gradio.
