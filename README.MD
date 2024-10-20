@@ -8,7 +8,8 @@ This repo is messy and dumb, but it *should* work.
 
 ---
 
-**For some reason, the speed is much slower on Windows than Linux**
+### **For some reason, the speed is much slower on Windows than Linux**
+
 Still sorting that out, I suppose.
 
 ---
