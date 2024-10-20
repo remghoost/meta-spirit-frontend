@@ -1,4 +1,4 @@
 gradio
 transformers
-https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp310-cp310-win_amd64.whl platform_system == "Windows"
-triton platform_system == "Linux"
+https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp310-cp310-win_amd64.whl platform_system == "Windows" and python_version == "3.10"
+triton platform_system == "Linux" and python_version == "3.10"
