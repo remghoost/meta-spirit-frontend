@@ -8,12 +8,23 @@ This repo is messy and dumb, but it *should* work.
 
 ---
 
-## Steps to run
+**For some reason, the speed is much slower on Windows than Linux**
+Still sorting that out, I suppose.
+
+---
+
+## Steps to run Windows
 
 - `git clone` this repo
 - `run.bat`
 
 - `update.bat` will update both this repo and spiritlm
+
+## Steps to run Linux
+- `git clone` this repo
+- `run.sh`
+
+- `update.sh` will update both this repo and spiritlm
 
 This will: 
 - Set up the venv 
