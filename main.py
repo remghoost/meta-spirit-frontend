@@ -85,4 +85,4 @@ iface = gr.Interface(
 )
 
 # Launch the interface
-iface.launch(inbrowser=True, max_threads=100, concurrency_limit=None)
+iface.launch(inbrowser=True, max_threads=100)
