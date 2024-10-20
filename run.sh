@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Check if firstLaunch.txt exists
+if [ -f firstLaunch.txt ]; then
+    echo "First launch detected. Setting up environment..."
+
+    # Set up a virtual environment and activate it
+    python3 -m venv venv
+    source venv/bin/activate
+
+    # Clone the repository without checking out files immediately
+    git clone --no-checkout https://huggingface.co/adamo1139/Meta_Spirit-LM-ungated
+
+    # Enter the cloned repository
+    cd Meta_Spirit-LM-ungated
+
+    # Enable sparse checkout with cone mode
+    git sparse-checkout init --cone
+
+    # Only include the necessary paths (everything except the unwanted folder)
+    git sparse-checkout set --no-cone "/*" "!spiritlm_model/spirit-lm-expressive-7b"
+
+    # Checkout the files
+    git checkout
+
+    cd ..
+
+    git clone https://github.com/facebookresearch/spiritlm
+
+    # Install the SpiritLM repository dependencies and package in editable mode
+    pip install -r spiritlm/requirements.txt
+    pip install -e spiritlm
+
+    # Uninstall the default version of torch
+    pip uninstall -y torch
+
+    # Install the remaining dependencies from requirements.txt
+    pip install -r requirements.txt
+
+    pip install torch torchaudio --upgrade --force-reinstall --index-url https://download.pytorch.org/whl/cu121
+
+    # Need to move the models folders over
+    mv Meta_Spirit-LM-ungated/spiritlm_model spiritlm/checkpoints
+    mv Meta_Spirit-LM-ungated/speech_tokenizer spiritlm/checkpoints
+    mv main.py spiritlm
+
+    # Remove the firstLaunch.txt file to prevent future installations
+    rm firstLaunch.txt
+
+    echo "Setup complete."
+else
+    echo "Not the first launch. Skipping installation."
+fi
+
+# Activate the virtual environment
+source venv/bin/activate
+
+# Moving to spiritlm folder
+cd spiritlm
+
+# Run the main application
+echo "Running Gradio."
+python3 main.py
