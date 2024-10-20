@@ -27,6 +27,8 @@ Still sorting that out, I suppose.
 
 - `update.sh` will update both this repo and spiritlm
 
+---
+
 This will: 
 - Set up the venv 
 - Download the model 
