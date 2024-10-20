@@ -13,6 +13,8 @@ This repo is messy and dumb, but it *should* work.
 - `git clone` this repo
 - `run.bat`
 
+- `update.bat` will update both this repo and spiritlm
+
 This will: 
 - Set up the venv 
 - Download the model 
