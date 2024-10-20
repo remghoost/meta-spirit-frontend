@@ -6,8 +6,33 @@ import torch
 import tempfile
 import os
 import numpy as np
+import subprocess
 
-# Initialize the Spirit LM base model. You can change this to spirit-lm-expressive-7b for a more expressive experience.
+# Function to set GPU to maximum performance mode
+def set_max_performance():
+    try:
+        # Enable persistent mode
+        subprocess.run(["nvidia-smi", "-pm", "1"], check=True)
+
+        # Set power mode to maximum performance (1 = maximum performance)
+        subprocess.run(["nvidia-smi", "-pl", "1"], check=True)
+        
+        print("Successfully set GPU to maximum performance mode.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error setting performance mode: {e}")
+
+# Call this function at the start to adjust GPU settings
+set_max_performance()
+
+# Ensure CUDA device is active and optimized
+if torch.cuda.is_available():
+    torch.cuda.empty_cache()
+    torch.backends.cudnn.benchmark = True  # Enables optimized CUDA algorithms
+    print(f"Using CUDA device: {torch.cuda.get_device_name(0)}")
+else:
+    print("CUDA device not available. Falling back to CPU.")
+
+# Initialize the Spirit LM base model
 spirit_lm = Spiritlm("spirit-lm-base-7b")
 
 def generate_output(input_type, input_content_text, input_content_audio, output_modality, temperature, top_p, max_new_tokens, do_sample, speaker_id):
@@ -41,7 +66,6 @@ def generate_output(input_type, input_content_text, input_content_audio, output_
         if output.content_type == ContentType.TEXT:
             text_output = output.content
         elif output.content_type == ContentType.SPEECH:
-            # Ensure output.content is a NumPy array
             if isinstance(output.content, np.ndarray):
                 # Debugging: Print shape and dtype of the audio data
                 print("Audio data shape:", output.content.shape)
@@ -49,18 +73,16 @@ def generate_output(input_type, input_content_text, input_content_audio, output_
 
                 # Ensure the audio data is in the correct format
                 if len(output.content.shape) == 1:
-                    # Mono audio data
-                    audio_data = torch.from_numpy(output.content).unsqueeze(0)
+                    audio_data = torch.from_numpy(output.content).unsqueeze(0)  # Mono
                 else:
-                    # Stereo audio data
-                    audio_data = torch.from_numpy(output.content)
+                    audio_data = torch.from_numpy(output.content)  # Stereo
 
                 # Save the audio content to a temporary file
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio_file:
                     torchaudio.save(temp_audio_file.name, audio_data, 16000)
                     audio_output = temp_audio_file.name
             else:
-                raise TypeError("Expected output.content to be a NumPy array, but got {}".format(type(output.content)))
+                raise TypeError(f"Expected output.content to be a NumPy array, but got {type(output.content)}")
 
     return text_output, audio_output
 
@@ -76,7 +98,7 @@ iface = gr.Interface(
         gr.Slider(0, 1, step=0.05, value=0.95, label="Top P"),
         gr.Slider(1, 800, step=1, value=500, label="Max New Tokens"),
         gr.Checkbox(value=True, label="Do Sample"),
-        gr.Dropdown(choices=[0, 1, 2, 3], value=0, label="Speaker ID"), 
+        gr.Dropdown(choices=[0, 1, 2, 3], value=0, label="Speaker ID"),
     ],
     outputs=[gr.Textbox(label="Generated Text"), gr.Audio(label="Generated Audio")],
     title="Spirit LM WebUI Demo",
